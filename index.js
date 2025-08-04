@@ -1,28 +1,20 @@
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
-const pool = require('./config/db');
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth/auth');
+dotenv.config();
 
 const app = express();
-
-// Middleware
-app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
-// Root
-app.get('/', (req, res) => {
-  res.send('Welcome to SkillSync API!');
-});
+// Error Handling
+app.use(notFound);
+app.use(errorHandler);
 
-// Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
