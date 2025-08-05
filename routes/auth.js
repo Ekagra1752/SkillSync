@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/authController');
+const {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword
+} = require('../controllers/authController');
 
-// @route POST /api/auth/register
+// No need to import authMiddleware or deleteUser now
+
 router.post('/register', registerUser);
-
-// @route POST /api/auth/login
 router.post('/login', loginUser);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
+
+// 👇 DELETE route removed
 
 module.exports = router;

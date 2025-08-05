@@ -4,11 +4,9 @@ const {
   getUserProfile,
   updateUserProfile,
 } = require('../controllers/usersController');
-const { protect } = require('../middleware/authMiddleware');
+const protect = require('../middleware/authMiddleware');
 
-router
-  .route('/profile')
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile); // ✅ PUT added
+router.get('/profile', protect, getUserProfile);
+router.put('/profile', protect, updateUserProfile);
 
 module.exports = router;
